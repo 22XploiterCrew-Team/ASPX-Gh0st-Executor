@@ -84,6 +84,13 @@
                     }
                 }
 
+                // The fix here is so that the E:\Folder With Spaces dir is automatically wrapped in a quote
+                if (command.ToLower().StartsWith("dir ") && command.IndexOf('"') == -1)
+                {
+                    string path = command.Substring(4).Trim();
+                    command = $"dir \"{path}\"";
+                }
+
                 ProcessStartInfo psi = new ProcessStartInfo();
                 psi.FileName = "cmd.exe";
                 psi.Arguments = "/c " + command;
